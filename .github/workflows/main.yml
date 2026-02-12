@@ -120,7 +120,7 @@ jobs:
         path: ./*.tgz
 
   deploy-dev:
-    uses: ./.github/workflows/reusable-deploy.yml
+    uses: ./.github/workflows/deploy.yml
     with:
       environment: dev
       image: ${{ secrets.DOCKERHUB_USERNAME }}/todoapp:${{ github.sha }}
@@ -129,7 +129,7 @@ jobs:
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
   deploy-stg:
     name: Deploy to Kind (Staging)
-    uses: ./.github/workflows/reusable-deploy.yml
+    uses: ./.github/workflows/deploy.yml
     needs: helm-ci
     with:
       environment: stg
