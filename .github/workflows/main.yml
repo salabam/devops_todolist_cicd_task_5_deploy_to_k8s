@@ -124,12 +124,10 @@ jobs:
     uses: ./.github/workflows/deploy.yml
     with:
       environment: dev
-      image: ${{ secrets.DOCKERHUB_USERNAME }}/todoapp:${{ github.sha }}
     secrets: inherit
   deploy-stg:
     needs: [docker-ci, helm-ci]
     uses: ./.github/workflows/deploy.yml
     with:
       environment: stg
-      image: ${{ secrets.DOCKERHUB_USERNAME }}/todoapp:${{ github.sha }}
     secrets: inherit
