@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       ENVIRONMENT: ${{ inputs.environment }}
-      IMAGE: ${{ inputs.image }}
+      IMAGE: ${{ inputs.image_tag }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -39,8 +39,8 @@ jobs:
 
       - name: Pull and load image to Kind
         run: |
-          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/todoapp:${{ inputs.image_tag }}
-          kind load docker-image ${{ secrets.DOCKERHUB_USERNAME }}/todoapp:${{ inputs.image_tag }} --name kind-${{ env.ENVIRONMENT }}
+          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DockerImageName }}:${{ inputs.image_tag }}
+          kind load docker-image ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DockerImageName }}:${{ inputs.image_tag }} --name kind-${{ env.ENVIRONMENT }}
 
       - name: Helm dry-run
         run: |
