@@ -5,6 +5,9 @@ on:
       environment:
         required: true
         type: string
+      image_tag:
+        required: true
+        type: string
     secrets:
       DOCKERHUB_USERNAME:
         required: true
@@ -36,8 +39,8 @@ jobs:
 
       - name: Pull and load image to Kind
         run: |
-          docker pull $IMAGE
-          kind load docker-image $IMAGE --name kind-${{ env.ENVIRONMENT }}
+          docker pull $image_tag
+          kind load docker-image $image_tag --name kind-${{ env.ENVIRONMENT }}
 
       - name: Helm dry-run
         run: |
@@ -45,7 +48,7 @@ jobs:
             --namespace todoapp-${{ env.ENVIRONMENT }} \
             --create-namespace \
             --set image.repository=${{ secrets.DOCKERHUB_USERNAME }}/todoapp \
-            --set image.tag=$(echo $IMAGE | cut -d ':' -f2) \
+            --set image.tag=$(echo $image_tag | cut -d ':' -f2) \
             --values ./helm-charts/todoapp/values.yaml \
             --atomic \
             --dry-run
@@ -56,6 +59,6 @@ jobs:
             --namespace todoapp-${{ env.ENVIRONMENT }} \
             --create-namespace \
             --set image.repository=${{ secrets.DOCKERHUB_USERNAME }}/todoapp \
-            --set image.tag=$(echo $IMAGE | cut -d ':' -f2) \
+            --set image.tag=$(echo $image_tag | cut -d ':' -f2) \
             --values ./helm-charts/todoapp/values.yaml \
             --atomic
