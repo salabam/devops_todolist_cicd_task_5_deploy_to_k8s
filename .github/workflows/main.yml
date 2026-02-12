@@ -120,21 +120,16 @@ jobs:
         path: ./*.tgz
 
   deploy-dev:
+    needs: [docker-ci, helm-ci]
     uses: ./.github/workflows/deploy.yml
     with:
       environment: dev
       image: ${{ secrets.DOCKERHUB_USERNAME }}/todoapp:${{ github.sha }}
-    secrets:
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+    secrets: inherit
   deploy-stg:
-    name: Deploy to Kind (Staging)
+    needs: [docker-ci, helm-ci]
     uses: ./.github/workflows/deploy.yml
-    needs: helm-ci
     with:
       environment: stg
       image: ${{ secrets.DOCKERHUB_USERNAME }}/todoapp:${{ github.sha }}
-    secrets:
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
-      
+    secrets: inherit
