@@ -39,8 +39,8 @@ jobs:
 
       - name: Pull and load image to Kind
         run: |
-          docker pull $image_tag
-          kind load docker-image $image_tag --name kind-${{ env.ENVIRONMENT }}
+          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/todoapp:${{ inputs.image_tag }}
+          kind load docker-image ${{ secrets.DOCKERHUB_USERNAME }}/todoapp:${{ inputs.image_tag }} --name kind-${{ env.ENVIRONMENT }}
 
       - name: Helm dry-run
         run: |
