@@ -28,7 +28,7 @@ jobs:
 
       - name: Create kind cluster
         run: |
-          kind create cluster --name kind-${{ env.ENVIRONMENT }} --config cluster.yml\
+          kind create cluster --name kind-${{ env.ENVIRONMENT }} --config cluster.yml
       - name: Set up KUBECONFIG
         run: |
           kind get kubeconfig --name kind-${{ env.ENVIRONMENT }} > $HOME/.kube/config
@@ -48,7 +48,7 @@ jobs:
             --namespace todoapp-${{ env.ENVIRONMENT }} \
             --create-namespace \
             --set image.repository=${{ secrets.DOCKERHUB_USERNAME }}/todoapp \
-            --set image.tag=$(echo $image_tag | cut -d ':' -f2) \
+            --set image.tag=$(${{ inputs.image_tag }} | cut -d ':' -f2) \
             --values ./helm-charts/todoapp/values.yaml \
             --atomic \
             --dry-run
@@ -59,6 +59,6 @@ jobs:
             --namespace todoapp-${{ env.ENVIRONMENT }} \
             --create-namespace \
             --set image.repository=${{ secrets.DOCKERHUB_USERNAME }}/todoapp \
-            --set image.tag=$(echo $image_tag | cut -d ':' -f2) \
+            --set image.tag=$(${{ inputs.image_tag }} | cut -d ':' -f2) \
             --values ./helm-charts/todoapp/values.yaml \
             --atomic
